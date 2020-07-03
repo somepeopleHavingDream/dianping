@@ -1,3 +1,4 @@
+create database if not exists dianping;
 CREATE TABLE `dianping`.`user`
 (
     `id`         int          NOT NULL AUTO_INCREMENT,

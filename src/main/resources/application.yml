@@ -17,6 +17,25 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
   resources:
-    add-mappings: false
+    # add-mappings=true表示如果所有的Controller都没有命中，则使用默认的静态资源处理
+    add-mappings: true
   mvc:
     throw-exception-if-no-handler-found: true
+    # 接入前端静态资源页面
+    static-path-pattern: /static/**
+#  thymeleaf:
+#    # devtools可以实现页面热部署（即页面修改后会立即生效，这个可以直接在application.yml文件中配置spring.thymeleaf.cache=false来实现）
+#    cache: false
+#  devtools:
+#    restart:
+#      # 设置开启热部署
+#      enabled: true
+#      # 重启目录
+#      additional-paths: src/main/java
+#      exclude: WEB-INF/**
+#  freemarker:
+#    # 页面不加载缓存，修改即时生效
+#    cache: false
+  thymeleaf:
+    prefix: classpath:/templates
+    suffix: .html

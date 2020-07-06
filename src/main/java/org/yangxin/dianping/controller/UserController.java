@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.yangxin.dianping.common.BusinessErrorEnum;
 import org.yangxin.dianping.common.BusinessException;
 import org.yangxin.dianping.common.CommonError;
@@ -33,14 +34,15 @@ public class UserController {
         return "test";
     }
 
+    @RequestMapping("/index")
+    public ModelAndView index() {
+        return new ModelAndView("/index.html");
+    }
+
     @RequestMapping("/get")
     @ResponseBody
     public CommonResponse getUser(@RequestParam(name = "id") Integer id) throws BusinessException {
         UserModel userModel = userService.getUser(id);
-//        return CommonResponse.create(userModel);
-//        return userModel == null
-//                ? CommonResponse.create(new CommonError(BusinessErrorEnum.NO_OBJECT_FOUND), "fail")
-//                : CommonResponse.create(userModel);
         if (userModel == null) {
             throw new BusinessException(BusinessErrorEnum.NO_OBJECT_FOUND);
         } else {

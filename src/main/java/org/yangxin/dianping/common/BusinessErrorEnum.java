@@ -2,8 +2,6 @@ package org.yangxin.dianping.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.omg.CORBA.UNKNOWN;
 
 /**
  * @author yangxin
@@ -19,7 +17,13 @@ public enum BusinessErrorEnum {
     NO_OBJECT_FOUND(10001, "请求对象不存在"),
     UNKNOWN_ERROR(10002, "未知错误"),
     NO_HANDLER_FOUND(10003, "找不到执行的路径操作"),
-    BIND_EXCEPTION_ERROR(10004, "请求参数错误");
+    BIND_EXCEPTION_ERROR(10004, "请求参数错误"),
+    PARAMETER_VALIDATION_ERROR(10005, "请求参数校验失败"),
+
+    /**
+     * 用户服务相关的错误类型20000开头
+     */
+    REGISTER_DUPLICATE_ERROR(20001, "用户已存在");
 
     /**
      * 错误代码

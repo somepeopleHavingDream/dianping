@@ -23,7 +23,8 @@ public enum BusinessErrorEnum {
     /**
      * 用户服务相关的错误类型20000开头
      */
-    REGISTER_DUPLICATE_ERROR(20001, "用户已存在");
+    REGISTER_DUPLICATE_ERROR(20001, "用户已存在"),
+    LOGIN_FAIL(20002, "手机号或密码错误");
 
     /**
      * 错误代码

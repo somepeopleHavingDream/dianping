@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.yangxin.dianping.common.*;
 import org.yangxin.dianping.model.UserModel;
+import org.yangxin.dianping.request.LoginRequest;
 import org.yangxin.dianping.request.RegisterRequest;
 import org.yangxin.dianping.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.NoSuchAlgorithmException;
 
@@ -25,10 +27,15 @@ import java.security.NoSuchAlgorithmException;
 public class UserController {
 
     private final UserService userService;
+    // 这里其实能够直接用HttpSession
+    private final HttpServletRequest httpServletRequest;
+
+    public static final String CURRENT_USER_SESSION = "currentUserSession";
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, HttpServletRequest httpServletRequest) {
         this.userService = userService;
+        this.httpServletRequest = httpServletRequest;
     }
 
     @RequestMapping("/test")
@@ -71,5 +78,36 @@ public class UserController {
 
         UserModel register = userService.register(registerUser);
         return CommonResponse.create(register);
+    }
+
+    @RequestMapping("/login")
+    @ResponseBody
+    public CommonResponse login(@RequestBody @Valid LoginRequest loginRequest, BindingResult bindingResult) throws BusinessException, NoSuchAlgorithmException {
+        if (bindingResult.hasErrors()) {
+            throw new BusinessException(BusinessErrorEnum.PARAMETER_VALIDATION_ERROR,
+                    CommonUtil.processErrorString(bindingResult));
+        }
+
+        UserModel userModel = userService.login(loginRequest.getTelephone(), loginRequest.getPassword());
+        httpServletRequest.getSession().setAttribute(CURRENT_USER_SESSION, userModel);
+
+        return CommonResponse.create(userModel);
+    }
+
+    @RequestMapping("/logout")
+    @ResponseBody
+    public CommonResponse logout() {
+        httpServletRequest.getSession().invalidate();
+        return CommonResponse.create(null);
+    }
+
+    /**
+     * 获取当前用户信息
+     */
+    @RequestMapping("/getCurrentUser")
+    @ResponseBody
+    public CommonResponse getCurrentUser() {
+        UserModel userModel = (UserModel) httpServletRequest.getSession().getAttribute(CURRENT_USER_SESSION);
+        return CommonResponse.create(userModel);
     }
 }

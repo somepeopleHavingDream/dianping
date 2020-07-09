@@ -55,6 +55,16 @@ public class UserServiceImpl implements UserService {
         return getUser(registerUser.getId());
     }
 
+    @Override
+    public UserModel login(String telephone, String password) throws NoSuchAlgorithmException, BusinessException {
+        UserModel userModel = userModelMapper.selectByTelephonePassword(telephone, encodeByMD5(password));
+        if (userModel == null) {
+            throw new BusinessException(BusinessErrorEnum.LOGIN_FAIL);
+        }
+
+        return userModel;
+    }
+
     /**
      * 通过MD5编码
      */

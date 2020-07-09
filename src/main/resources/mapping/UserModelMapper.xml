@@ -154,4 +154,11 @@
         gender = #{gender,jdbcType=INTEGER}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="selectByTelephonePassword" resultMap="BaseResult">
+        select <include refid="Base_Column_List"/>
+        from user
+        where telphone = #{telephone}
+        and password = #{password}
+    </select>
 </mapper>
